@@ -25,10 +25,5 @@ namespace ConsoleApp1
         {
             base.TransferBetweenInventory(person1, person2);
         }
-
-        public void SendToPrison()
-        {
-
-        }
     }
 }
