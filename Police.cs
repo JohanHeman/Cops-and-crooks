@@ -8,5 +8,14 @@ namespace ConsoleApp1
 {
     internal class Police
     {
+        public override TransferBetweenInventory()
+        {
+
+        }
+
+        public override Greet() 
+        {
+              
+        }
     }
 }
