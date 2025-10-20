@@ -13,15 +13,14 @@ namespace ConsoleApp1
 
         }
 
-<<<<<<< HEAD
-        public override Greet() 
-        {
-              
-=======
         public override Greet()
         {
 
->>>>>>> Olli
+        }
+              
+        public override Greet()
+        {
+
         }
     }
 }
