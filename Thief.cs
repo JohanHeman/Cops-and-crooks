@@ -23,7 +23,7 @@ namespace ConsoleApp1
 
         public void SendToPrison()
         {
-            //hejadad
+            
         }
     }
 }

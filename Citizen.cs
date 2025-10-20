@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
-    internal class Police : Person
+    internal class Citizen : Person
     {
+
         public override TransferBetweenInventory()
         {
 
         }
-
         public override Greet()
         {
 
