@@ -9,13 +9,13 @@ namespace ConsoleApp1
     internal class Citizen : Person
     {
 
+        public Citizen(string name, int positionX, int positionY, List<Item> inventory, int directionX, int directionY) : base(name, positionX, positionY, inventory, directionX, directionY)
+        {
+
+        }
         public override void TransferBetweenInventory(Person person1, Person person2)
         {
             base.TransferBetweenInventory(person1, person2);
-        }
-        public override void Greet()
-        {
-
         }
     }
 }
