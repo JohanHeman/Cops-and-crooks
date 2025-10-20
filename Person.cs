@@ -8,13 +8,13 @@ namespace ConsoleApp1
 {
     internal class Person
     {
-        static string Name {  get; set; }
-        static int PositionX { get; set; }
-        static int PositionY { get; set; }
+        public string Name {  get; set; }
+        public int PositionX { get; set; }
+        public int PositionY { get; set; }
 
-        static List<Item> Inventory { get; set; }
+        public List<Item> Inventory { get; set; }
         
-        static int DirectionX { get; set; }
-        static int DirectionY { get; set; }
+        public int DirectionX { get; set; }
+        public int DirectionY { get; set; }
     }
 }
