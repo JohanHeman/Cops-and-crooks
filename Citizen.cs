@@ -9,11 +9,11 @@ namespace ConsoleApp1
     internal class Citizen : Person
     {
 
-        public override TransferBetweenInventory()
+        public override void TransferBetweenInventory(Person person1, Person person2)
         {
-
+            base.TransferBetweenInventory(person1, person2);
         }
-        public override Greet()
+        public override void Greet()
         {
 
         }
