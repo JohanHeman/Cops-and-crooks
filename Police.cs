@@ -13,9 +13,6 @@ namespace ConsoleApp1
             base.TransferBetweenInventory(person1, person2);
         }
 
-        public override void Greet()
-        {
-
-        }
+        // greet function in Person.cs
     }
 }

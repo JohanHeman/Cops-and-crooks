@@ -36,17 +36,29 @@ namespace ConsoleApp1
             {
                 foreach (Item i in person2.Inventory)
                 {
-                    person1.Inventory.Add(i); // takes all items to police from thiev
+                    person1.Inventory.Add(i); // takes all items to police from thief
                 }
-            } else if(person1 is Thief && person2 is Person )
+            } else if(person1 is Thief && person2 is Citizen )
             {
                 int num = Random.Shared.Next(1, person2.Inventory.Count);
 
                 person1.Inventory.Add(person2.Inventory[num]); // takes random item from citezen
             }
-            
 
         }
+
+        public static void Greet(Person person1, Person person2)
+        {
+
+            if (person1.PositionY == person2.PositionY && person1.PositionX == person2.PositionX
+                && person1 is Police || person1 is Person && person2 is Police || person2 is Person)
+            {
+                Console.WriteLine("Greetings");
+            }
+
+        }
+
+
 
     }
 
