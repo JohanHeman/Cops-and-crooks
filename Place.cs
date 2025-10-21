@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +14,8 @@ namespace ConsoleApp1
         public int SizeX { get; set; }
         public int SizeY { get; set; }
         public List<Person> People { get; set; }
+
+        public List<Person> CollidedPeople { get; set; } = new List<Person>();
 
         public Place(string name, int sizex, int sizey)
         {
@@ -45,10 +49,14 @@ namespace ConsoleApp1
             */
         }
 
+
         public void Draw()
         {
             int x = 0;
             int y = 0;
+
+            CollidedPeople.Clear();
+            CollidedPeople = new List<Person>();
 
             while (y < SizeY + 1)
             {
@@ -64,18 +72,22 @@ namespace ConsoleApp1
                     }
                     else
                     {
-                        if (GetAtLocation(x,y) != null)
+                        if (GetAtLocation(x, y).Count > 1)
                         {
-                            Person person = GetAtLocation(x, y);
-                            if (person is Thief)
+                            Person person = GetAtLocation(x, y).FirstOrDefault(person => person is Thief || person is Police);
+                            /*
+                            foreach (var person in GetAtLocation(x,y))
                             {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.Write(" T ");
-                            }
-                            else if (person is Police)
+                            */
+                            if (person is Police)
                             {
                                 Console.ForegroundColor = ConsoleColor.Blue;
                                 Console.Write(" P ");
+                            }
+                            else if (person is Thief)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.Write(" T ");
                             }
                             else
                             {
@@ -84,6 +96,39 @@ namespace ConsoleApp1
                             }
                             Console.ResetColor();
                             Thread.Sleep(1);
+                            foreach (var item in GetAtLocation(x,y))
+                            {
+                                if (!CollidedPeople.Contains(item))
+                                    CollidedPeople.Add(item);
+                            }
+                        }
+                        else if (GetAtLocation(x,y).Count == 1)
+                        {
+                            Person person = GetAtLocation(x, y)[0];
+                            /*
+                            foreach (var person in GetAtLocation(x,y))
+                            {
+                            */
+                                if (person is Police)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                    Console.Write(" P ");
+                                }
+                                else if (person is Thief)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.Write(" T ");
+                                }
+                                else
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                                    Console.Write(" C ");
+                                }
+                                Console.ResetColor();
+                                Thread.Sleep(1);
+                            /*
+                            }
+                            */
                         }
                         else
                         {
@@ -99,12 +144,12 @@ namespace ConsoleApp1
                     y++;
                 }
             }
-
+            
             foreach (var item in People)
             {
                 item.Move(SizeX, SizeY);
-
             }
+
         }
         public bool CheckCollision(Person a, Person b)
         {
@@ -116,18 +161,19 @@ namespace ConsoleApp1
             return false;
         }
         // Temp method until it is established at other point
-        private Person GetAtLocation(int x, int y)
+        private List<Person> GetAtLocation(int x, int y)
         {
+            List<Person> persons = new List<Person>(); 
             x -= 1;
             y -= 1;
             foreach (Person person in People)
             {
                 if (person.PositionX == x && person.PositionY == y)
                 {
-                    return person;
+                    persons.Add(person);
                 }
             }
-            return null;
+            return persons;
         }
     }
 }
