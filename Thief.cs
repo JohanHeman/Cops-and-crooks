@@ -13,7 +13,12 @@ namespace ConsoleApp1
 
         public Thief(int timeInPrison, string name, int positionX, int positionY, List<Item> inventory, int directionX, int directionY) : base(name, positionX, positionY, inventory, directionX, directionY)
         {
-            TimeInPrison = timeInPrison;
+            Name = name;
+            PositionX = positionX;
+            PositionY = positionY;
+            Inventory = inventory;
+            DirectionX = directionX;
+            DirectionY = directionY;
         }
 
         public static void SendToPrison()
