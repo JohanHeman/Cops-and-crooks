@@ -7,11 +7,11 @@
         static void Main(string[] args)
         {
             places = new List<Place>();
-            places.Add(new Place("City", 10));
-            places.Add(new Place("Prison", 8));
+            places.Add(new Place("City", 10,10));
+            places.Add(new Place("Prison", 8,8));
             foreach (var item in places)
             {
-                Console.WriteLine("Place: {0} vilken är {1}x{1}", item.Name, item.Size);
+                Console.WriteLine("Place: {0} vilken är {1}x{2}", item.Name, item.SizeX,item.SizeY);
                 item.Draw();
             }
 
@@ -27,8 +27,8 @@
                 if (prison != null)
                 {
                     Random rnd = new Random();
-                    t.PositionX = rnd.Next(prison.Size);
-                    t.PositionY = rnd.Next(prison.Size);
+                    t.PositionX = rnd.Next(prison.SizeX);
+                    t.PositionY = rnd.Next(prison.SizeY);
                 }
             }
         }

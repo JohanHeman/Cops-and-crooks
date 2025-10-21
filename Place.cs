@@ -29,11 +29,11 @@ namespace ConsoleApp1
                 People.Add(new Citizen("Bengtson", 1, 1, new List<Item>(), -1, 1));
                 People.Add(new Citizen("James", 3, 5, new List<Item>(), 1, -1));
                 People.Add(new Citizen("Brown", 4, 4, new List<Item>(), 0, -1));
-                People.Add(new Thief(1, "Speedster", 3, 4, new List<Item>(), 1, 2));
+                People.Add(new Thief("Speedster", 3, 4, new List<Item>(), 1, 2));
                 People.Add(new Citizen("Maya", 1, 3, new List<Item>(), 1, 0));
                 People.Add(new Citizen("Georgia", SizeX / 2, SizeY / 3 + 1, new List<Item>(), 1, 0));
                 People.Add(new Citizen("Bob", 7, SizeY / 2 - 1, new List<Item>(), 0, 1));
-                People.Add(new Thief(1, "Walker", 2, 2, new List<Item>(), 1, 1));
+                People.Add(new Thief("Walker", 2, 2, new List<Item>(), 1, 1));
             }
             /*
             People.Add(new Police("Bengt", 2,2 ));
