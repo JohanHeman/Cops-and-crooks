@@ -48,16 +48,7 @@ namespace ConsoleApp1
 
         }
 
-        public static void Greet(Person person1, Person person2)
-        {
-
-            if (person1.PositionY == person2.PositionY && person1.PositionX == person2.PositionX
-                && person1 is Police || person1 is Person && person2 is Police || person2 is Person)
-            {
-                Console.WriteLine("Greetings");
-            }
-
-        }
+            
         
         public virtual void Move(int sizex, int sizey)
         {
