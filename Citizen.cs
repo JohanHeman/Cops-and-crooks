@@ -11,7 +11,12 @@ namespace ConsoleApp1
 
         public Citizen(string name, int positionX, int positionY, List<Item> inventory, int directionX, int directionY) : base(name, positionX, positionY, inventory, directionX, directionY)
         {
-
+            Name = name;
+            PositionX = positionX;
+            PositionY = positionY;
+            Inventory = inventory;
+            DirectionX = directionX;
+            DirectionY = directionY;
         }
         public override void TransferBetweenInventory(Person person1, Person person2)
         {
