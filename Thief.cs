@@ -21,11 +21,6 @@ namespace ConsoleApp1
             DirectionY = directionY;
         }
 
-        public static void SendToPrison()
-        {
-            
-        }
-
         public override void TransferBetweenInventory(Person person1, Person person2)
         {
             base.TransferBetweenInventory(person1, person2);
