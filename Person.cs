@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -57,9 +58,28 @@ namespace ConsoleApp1
             }
 
         }
-
-
-
+        
+        public virtual void Move(int sizex, int sizey)
+        {
+            PositionX += DirectionX;
+            PositionY += DirectionY;
+            if (PositionX >= sizex)
+            {
+                PositionX = 1;
+            }
+            else if (PositionX <= 0)
+            {
+                PositionX = sizex - 1;
+            }
+            if (PositionY >= sizey)
+            {
+                PositionY = 1;
+            }
+            else if (PositionY <= 0)
+            {
+                PositionY = sizey - 1;
+            }
+        }
     }
 
 }

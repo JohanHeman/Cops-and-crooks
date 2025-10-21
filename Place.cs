@@ -103,6 +103,7 @@ namespace ConsoleApp1
             foreach (var item in People)
             {
                 item.Move(SizeX, SizeY);
+
             }
         }
         public bool CheckCollision(Person a, Person b)
