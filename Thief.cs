@@ -11,7 +11,7 @@ namespace ConsoleApp1
         public int TimeInPrison { get; set; }
 
 
-        public Thief(int timeInPrison, string name, int positionX, int positionY, List<Item> inventory, int directionX, int directionY) : base(name, positionX, positionY, inventory, directionX, directionY)
+        public Thief(string name, int positionX, int positionY, List<Item> inventory, int directionX, int directionY) : base(name, positionX, positionY, inventory, directionX, directionY)
         {
             Name = name;
             PositionX = positionX;
@@ -23,7 +23,7 @@ namespace ConsoleApp1
 
         public static void SendToPrison()
         {
-
+            
         }
 
         public override void TransferBetweenInventory(Person person1, Person person2)

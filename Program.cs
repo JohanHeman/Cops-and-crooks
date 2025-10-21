@@ -6,7 +6,6 @@
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
             places = new List<Place>();
             places.Add(new Place("City", 10));
             places.Add(new Place("Prison", 8));
@@ -18,6 +17,20 @@
 
             MainLoop();
             WriteOut();
+        }
+
+        static void TransferToPlace(Thief t, Police p)
+        {
+            if (t.PositionX == p.PositionX && t.PositionY == p.PositionY)
+            {
+                Place prison = places.FirstOrDefault(place => place.Name == "Prison");
+                if (prison != null)
+                {
+                    Random rnd = new Random();
+                    t.PositionX = rnd.Next(prison.Size);
+                    t.PositionY = rnd.Next(prison.Size);
+                }
+            }
         }
 
         static void MainLoop()
