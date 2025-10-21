@@ -9,16 +9,32 @@ namespace ConsoleApp1
     internal class Place
     {
         public string Name { get; set; }
-        public int Size { get; set; }
+        public int SizeX { get; set; }
+        public int SizeY { get; set; }
         public List<Person> People { get; set; }
 
-        public Place(string name, int size)
+        public Place(string name, int sizex, int sizey)
         {
             Name = name;
-            Size = size;
+            SizeX = sizex;
+            SizeY = sizey;
             People = new List<Person>();
 
             // Temporary thing
+
+            if (name != "Prison")
+            {
+                People.Add(new Police("Bengt", 1, 1, new List<Item>(), 0, 1));
+                People.Add(new Police("Bengte", 5, 3, new List<Item>(), 1, 1));
+                People.Add(new Citizen("Bengtson", 1, 1, new List<Item>(), -1, 1));
+                People.Add(new Citizen("James", 3, 5, new List<Item>(), 1, -1));
+                People.Add(new Citizen("Brown", 4, 4, new List<Item>(), 0, -1));
+                People.Add(new Thief(1, "Speedster", 3, 4, new List<Item>(), 1, 2));
+                People.Add(new Citizen("Maya", 1, 3, new List<Item>(), 1, 0));
+                People.Add(new Citizen("Georgia", SizeX / 2, SizeY / 3 + 1, new List<Item>(), 1, 0));
+                People.Add(new Citizen("Bob", 7, SizeY / 2 - 1, new List<Item>(), 0, 1));
+                People.Add(new Thief(1, "Walker", 2, 2, new List<Item>(), 1, 1));
+            }
             /*
             People.Add(new Police("Bengt", 2,2 ));
             People.Add(new Person("Bengti", 1,1));
@@ -34,45 +50,44 @@ namespace ConsoleApp1
             int x = 0;
             int y = 0;
 
-            while (y < Size + 1)
+            while (y < SizeY + 1)
             {
-                if (x < Size + 1)
+                if (x < SizeX + 1)
                 {
-                    if (x == 0 || x == Size)
+                    if (x == 0 || x == SizeX)
                     {
-                        Console.Write("|");
+                        Console.Write("| |");
                     }
-                    else if (y == 0 || y == Size)
+                    else if (y == 0 || y == SizeY)
                     {
-                        Console.Write("-");
+                        Console.Write(" - ");
                     }
                     else
                     {
                         if (GetAtLocation(x,y) != null)
                         {
-                            Thread.Sleep(2);
                             Person person = GetAtLocation(x, y);
                             if (person is Thief)
                             {
                                 Console.ForegroundColor = ConsoleColor.Red;
-                                Console.Write("T");
+                                Console.Write(" T ");
                             }
                             else if (person is Police)
                             {
                                 Console.ForegroundColor = ConsoleColor.Blue;
-                                Console.Write("P");
+                                Console.Write(" P ");
                             }
                             else
                             {
                                 Console.ForegroundColor = ConsoleColor.Yellow;
-                                Console.Write("C");
+                                Console.Write(" C ");
                             }
                             Console.ResetColor();
+                            Thread.Sleep(1);
                         }
                         else
                         {
-                            Thread.Sleep(1);
-                            Console.Write(" ");
+                            Console.Write("   ");
                         }
                     }
                     x++;
@@ -83,6 +98,11 @@ namespace ConsoleApp1
                     x = 0;
                     y++;
                 }
+            }
+
+            foreach (var item in People)
+            {
+                item.Move(SizeX, SizeY);
             }
         }
         public bool CheckCollision(Person a, Person b)
