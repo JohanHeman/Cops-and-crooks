@@ -85,12 +85,21 @@ namespace ConsoleApp1
 
                 else if(person1 is Police && person2 is Thief)
                 {
+                Thread.Sleep(10000);
+                Thief thief = (Thief)person2;
+                SendToPrisson(thief);
+
                 que.Enqueue($"The police {person1.Name} captures {person2.Name} and sends them to prisson! ");
                 Console.WriteLine(que.Peek());
                 
                 
                 } else if(person1 is Thief && person2 is Police)
+
                 {
+                Thief thief = (Thief)person1;
+                Thread.Sleep(10000);
+                SendToPrisson(thief);
+
                 que.Enqueue($"The police {person2.Name} captures {person1.Name} and sends them to prisson! ");
                 Console.WriteLine(que.Peek());
                 
@@ -115,10 +124,34 @@ namespace ConsoleApp1
                     }
                 }
                 
-                Thread.Sleep(1000);
+                Thread.Sleep(1);
                 min++;
             }
 
+        }
+
+
+        static void SendToPrisson(Thief thief)
+        {
+
+            places[1].People.Add(thief);
+            places[0].People.Remove(thief);
+            
+            thief.TimeInPrison = thief.Inventory.Count * 10;
+            thief.PositionX = 1;
+            thief.PositionY = 14;
+
+        }
+
+        static void SendToCity(Thief thief)
+        {
+            if(thief.TimeInPrison >= 0)
+            {
+                thief.TimeInPrison--;
+            }
+
+            places[1].People.Remove(thief);
+            places[0].People.Add(thief);
         }
 
 
