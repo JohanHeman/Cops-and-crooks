@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Globalization;
 
 namespace ConsoleApp1
 {
@@ -43,7 +44,7 @@ namespace ConsoleApp1
             for (int i = 0; i < 100; i++)
             {
                 Console.SetCursorPosition(0, 0);
-                foreach (var item in places)
+                foreach (var item in places) 
                 {
                     item.Draw();
                     Thread.Sleep(1);
