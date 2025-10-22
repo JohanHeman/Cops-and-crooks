@@ -31,7 +31,6 @@ namespace ConsoleApp1
                 }
             }
 
-
         }
 
         static void MainLoop()
@@ -57,55 +56,63 @@ namespace ConsoleApp1
 
         static void WriteOut(Person person1, Person person2)
         {
-                Queue que = new();
+            Queue que = new();
            
-                if(person1 is Police && person2 is Police || person1 is Police && person2 is Police)
-                {
+            if(person1 is Police && person2 is Police || person1 is Police && person2 is Police)
+            {
                 que.Enqueue($"The police officer {person1.Name} greets his colleague            ");
                 Console.WriteLine(que.Peek());
-                    
-                } else if (person1 is Police && person2 is Citizen || person1 is Citizen && person2 is Police)
-                {
-                que.Enqueue($"The police officer {person1.Name} greets the citizen {person2.Name}");
-                Console.WriteLine(que.Peek());
-                
-                } else if (person1 is Thief && person2 is Citizen)
-                {
+                que.Dequeue();
 
+            }
+            else if (person1 is Police && person2 is Citizen || (person1 is Citizen && person2 is Police))
+            {
+                
+                que.Enqueue($"The police officer {person1.Name} greets the citizen {person2.Name}");
+                
+                Console.WriteLine(que.Peek());
+                que.Dequeue();
+
+            }
+            else if (person1 is Thief && person2 is Citizen)
+            {
+                
                 que.Enqueue($"The thief {person1.Name} steals an item from {person2.Name}! ");
                 Console.WriteLine(que.Peek());
-                
-                }
+                que.Dequeue();
 
-                else if(person1 is Citizen && person2 is Thief)
-                {
+            }
+
+            else if(person1 is Citizen && person2 is Thief)
+            {
                 que.Enqueue($"The thief {person2.Name} steals an item from {person1.Name}! ");
                 Console.WriteLine(que.Peek());
+                que.Dequeue();
                 
-                }
+            }
 
-                else if(person1 is Police && person2 is Thief)
-                {
-                Thread.Sleep(10000);
+            if(person1 is Police && person2 is Thief)
+            {
+
                 Thief thief = (Thief)person2;
                 SendToPrisson(thief);
 
                 que.Enqueue($"The police {person1.Name} captures {person2.Name} and sends them to prisson! ");
                 Console.WriteLine(que.Peek());
-                
-                
-                } else if(person1 is Thief && person2 is Police)
+                Thread.Sleep(1000);
+                que.Dequeue();
+            }
+            if(person1 is Thief && person2 is Police)
+            {
 
-                {
                 Thief thief = (Thief)person1;
-                Thread.Sleep(10000);
                 SendToPrisson(thief);
 
                 que.Enqueue($"The police {person2.Name} captures {person1.Name} and sends them to prisson! ");
                 Console.WriteLine(que.Peek());
-                
-                }
-            
+                Thread.Sleep(1000);
+                que.Dequeue();
+            }
         }
         
 
@@ -119,18 +126,15 @@ namespace ConsoleApp1
                 Console.SetCursorPosition(0, 23);
                 for (int i = min; i < place.CollidedPeople.Count - 1; i++)
                 {
-
-                if(place.CheckCollision(place.CollidedPeople[i], p) == true) { 
-                WriteOut(place.CollidedPeople[i], p);
+                    if(place.CheckCollision(place.CollidedPeople[i], p) == true) 
+                    { 
+                        WriteOut(place.CollidedPeople[i], p);
                     }
                 }
-                
                 Thread.Sleep(1);
                 min++;
             }
-
         }
-
 
         static void SendToPrisson(Thief thief)
         {

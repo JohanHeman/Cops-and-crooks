@@ -28,29 +28,34 @@ namespace ConsoleApp1
 
             if (name != "Prison")
             {
-                People.Add(new Police("Bengt", 1, 1, new List<Item>(), 0, 1));
-                People.Add(new Police("Bengte", 5, 3, new List<Item>(), 1, 1));
-                People.Add(new Citizen("Bengtson", 1, 1, new List<Item>(), -1, 1));
-                People.Add(new Citizen("James", 3, 5, new List<Item>(), 1, -1));
-                People.Add(new Citizen("Brown", 4, 4, new List<Item>(), 0, -1));
-                People.Add(new Thief("Speedster", 3, 4, new List<Item>(), 1, 2));
-                People.Add(new Thief("Speedster", 1, 1, new List<Item>(), 1, 2));
-                People.Add(new Thief("Speedster", 1, 1, new List<Item>(), -1, 1));
-                People.Add(new Citizen("Maya", 1, 3, new List<Item>(), 1, 0));
-                People.Add(new Citizen("Georgia", SizeX / 2, SizeY / 3 + 1, new List<Item>(), 1, 0));
-                People.Add(new Citizen("Bob", 7, SizeY / 2 - 1, new List<Item>(), 0, 1));
-                People.Add(new Thief("Walker", 2, 2, new List<Item>(), 1, 1));
-                People.Add(new Police("Watkins", 7, 4, new List<Item>(), 1, 1));
-                People.Add(new Police("Watkins", 2, 1, new List<Item>(), 2, 2));
-                People.Add(new Police("Watkins", 1, 8, new List<Item>(), 3, 3));
-                People.Add(new Police("Watkins", 1, 8, new List<Item>(), 0, 0));
-                People.Add(new Police("Watkins", 7, 8, new List<Item>(), 0, 0));
-                People.Add(new Thief("Walker", 8, 8, new List<Item>(), -1, 0));
-                People.Add(new Thief("Walker", 4, 8, new List<Item>(), -1, 0));
-                People.Add(new Thief("Walker", 7, 5, new List<Item>(), 1, 1));
-                People.Add(new Thief("Walker", 5, 2, new List<Item>(), 0, 1));
-                People.Add(new Thief("Walker", 1, 2, new List<Item>(), 1, 1));
-                People.Add(new Thief("Walker", 8, 2, new List<Item>(), 0, 0));
+                People.Add(new Police("Bengt", 1, 1, 0, 1));
+                People.Add(new Police("Bengte", 5, 3, 1, 1));
+                People.Add(new Citizen("Bengtson", 1, 1, -1, 1));
+                People.Add(new Citizen("James", 3, 5, 1, -1));
+                People.Add(new Citizen("Brown", 4, 4, 0, -1));
+                People.Add(new Thief("Speedster", 3, 4, 1, 2));
+                People.Add(new Thief("Speedster", 1, 1, 1, 2));
+                People.Add(new Thief("Speedster", 1, 1, -1, 1));
+                People.Add(new Citizen("Maya", 1, 3, 1, 0));
+                People.Add(new Citizen("Georgia", SizeX / 2, SizeY / 3 + 1, 1, 0));
+                People.Add(new Citizen("Bob", 7, SizeY / 2 - 1, 0, 1));
+                People.Add(new Thief("Walker", 2, 2, 1, 1));
+                People.Add(new Police("Watkins", 7, 4, 1, 1));
+                People.Add(new Police("Watkins", 2, 1, 2, 2));
+                People.Add(new Police("Watkins", 1, 8, 3, 3));
+                People.Add(new Police("Watkins", 1, 8, 0, 0));
+                People.Add(new Police("Watkins", 7, 8, 0, 0));
+                People.Add(new Thief("Walker", 8, 8, -1, 0));
+                People.Add(new Thief("Walker", 4, 8, -1, 0));
+                People.Add(new Thief("Walker", 7, 5, 1, 1));
+                People.Add(new Thief("Walker", 5, 2, 0, 1));
+                People.Add(new Thief("Walker", 1, 2, 1, 1));
+                People.Add(new Thief("Walker", 8, 2, 0, 0));
+                People.Add(new Thief("Walker", 4, 8, 0, 0));
+                People.Add(new Thief("Walker", 7, 5, 0, 0));
+                People.Add(new Thief("Walker", 5, 2, 0, 0));
+                People.Add(new Thief("Walker", 1, 2, 0, 0));
+                People.Add(new Thief("Walker", 8, 2, 0, 0));
 
             }
             /*
