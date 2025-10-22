@@ -19,15 +19,51 @@ namespace ConsoleApp1
         public int DirectionY { get; set; }
 
 
-        public Person(string name, int positionX, int positionY, List<Item> inventory, int directionX, int directionY)
+        public Person(string name, int positionX, int positionY, int directionX, int directionY)
         {
             Name = name;
             PositionX = positionX;
             PositionY = positionY;
-            Inventory = inventory;
             DirectionX = directionX;
             DirectionY = directionY;
             
+            Inventory = SetUpInventory();
+        }
+
+        protected List<Item> SetUpInventory()
+        {
+            List<Item> inventory = new List<Item>();
+            
+            Random rnd = new Random();
+
+            int i = rnd.Next(4);
+            int type = rnd.Next(5);
+
+            Item item = new Item();
+            while (i > 0)
+            {
+                switch (type)
+                {
+                    case 1:
+                        item.Name = "Klocka";
+                        break;
+                    case 2:
+                        item.Name = "Sten";
+                        break;
+                    case 3:
+                        item.Name = "Plånbok";
+                        break;
+                    case 4:
+                        item.Name = "Burk";
+                        break;
+                    default:
+                        item.Name = "Pinne";
+                        break;
+                }
+                inventory.Add(item);
+                i--;
+            }
+            return inventory;
         }
 
         

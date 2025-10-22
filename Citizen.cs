@@ -9,14 +9,15 @@ namespace ConsoleApp1
     internal class Citizen : Person
     {
 
-        public Citizen(string name, int positionX, int positionY, List<Item> inventory, int directionX, int directionY) : base(name, positionX, positionY, inventory, directionX, directionY)
+        public Citizen(string name, int positionX, int positionY, int directionX, int directionY) : base(name, positionX, positionY, directionX, directionY)
         {
             Name = name;
             PositionX = positionX;
             PositionY = positionY;
-            Inventory = inventory;
             DirectionX = directionX;
             DirectionY = directionY;
+
+            Inventory = SetUpInventory();
         }
         public override void TransferBetweenInventory(Person person1, Person person2)
         {
