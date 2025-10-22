@@ -38,7 +38,7 @@ namespace ConsoleApp1
                 People.Add(new Citizen("Georgia", SizeX / 2, SizeY / 3 + 1, new List<Item>(), 1, 0));
                 People.Add(new Citizen("Bob", 7, SizeY / 2 - 1, new List<Item>(), 0, 1));
                 People.Add(new Thief("Walker", 2, 2, new List<Item>(), 1, 1));
-                People.Add(new Police("hej", 4, 3, new List<Item>(), 0, 0));
+                People.Add(new Police("Watkins", 4, 3, new List<Item>(), 0, 0));
             }
             /*
             People.Add(new Police("Bengt", 2,2 ));
