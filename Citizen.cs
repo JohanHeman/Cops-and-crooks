@@ -9,13 +9,12 @@ namespace ConsoleApp1
     internal class Citizen : Person
     {
 
-        public Citizen(string name, int positionX, int positionY, int directionX, int directionY) : base(name, positionX, positionY, directionX, directionY)
+        public Citizen(string name, int positionX, int positionY) : base(name, positionX, positionY)
         {
             Name = name;
             PositionX = positionX;
             PositionY = positionY;
-            DirectionX = directionX;
-            DirectionY = directionY;
+            RandomizeDirection();
 
             Inventory = SetUpInventory();
         }

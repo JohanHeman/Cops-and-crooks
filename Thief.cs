@@ -11,13 +11,12 @@ namespace ConsoleApp1
         public int TimeInPrison { get; set; }
 
 
-        public Thief(string name, int positionX, int positionY, int directionX, int directionY) : base(name, positionX, positionY, directionX, directionY)
+        public Thief(string name, int positionX, int positionY) : base(name, positionX, positionY)
         {
             Name = name;
             PositionX = positionX;
             PositionY = positionY;
-            DirectionX = directionX;
-            DirectionY = directionY;
+            RandomizeDirection();
 
             Inventory = SetUpInventory();
         }

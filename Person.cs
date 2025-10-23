@@ -19,15 +19,21 @@ namespace ConsoleApp1
         public int DirectionY { get; set; }
 
 
-        public Person(string name, int positionX, int positionY, int directionX, int directionY)
+        public Person(string name, int positionX, int positionY)
         {
             Name = name;
             PositionX = positionX;
             PositionY = positionY;
-            DirectionX = directionX;
-            DirectionY = directionY;
-            
+            RandomizeDirection();
+
             Inventory = SetUpInventory();
+        }
+
+        public void RandomizeDirection()
+        {
+            Random rnd = new Random();
+            DirectionX = rnd.Next(-1,1);
+            DirectionY = rnd.Next(-1, 1);
         }
 
         protected List<Item> SetUpInventory()
@@ -71,15 +77,39 @@ namespace ConsoleApp1
         {
             if(person1 is Police && person2 is Thief)
             {
+                if (person2.Inventory.Count <= 0) return;
+
                 foreach (Item i in person2.Inventory)
                 {
                     person1.Inventory.Add(i); // takes all items to police from thief
                 }
-            } else if(person1 is Thief && person2 is Citizen )
+                person2.Inventory.Clear();
+            }
+            else if (person1 is Thief && person2 is Police)
             {
-                int num = Random.Shared.Next(1, person2.Inventory.Count);
+                if (person1.Inventory.Count <= 0) return;
+
+                foreach (Item i in person1.Inventory)
+                {
+                    person2.Inventory.Add(i); // takes all items to police from thief
+                }
+                person1.Inventory.Clear();
+            }
+            else if(person1 is Thief && person2 is Citizen)
+            {
+                if (person2.Inventory.Count <= 0) return;
+                int num = Random.Shared.Next(0, person2.Inventory.Count - 1);
 
                 person1.Inventory.Add(person2.Inventory[num]); // takes random item from citezen
+                person2.Inventory.Remove(person2.Inventory[num]); // takes random item from citezen
+            }
+            else if (person1 is Citizen && person2 is Thief)
+            {
+                if (person1.Inventory.Count <= 0) return;
+                int num = Random.Shared.Next(0, person1.Inventory.Count - 1);
+
+                person2.Inventory.Add(person1.Inventory[num]); // takes random item from citezen
+                person1.Inventory.Remove(person1.Inventory[num]); // takes random item from citezen
             }
 
         }

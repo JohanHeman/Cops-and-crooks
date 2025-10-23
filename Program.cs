@@ -10,27 +10,20 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             places = new List<Place>();
-            places.Add(new Place("City", 10,10));
+            places.Add(new Place("City", 15,10));
             places.Add(new Place("Prison", 8,8));
 
             MainLoop();
 
         }
 
-        static void TransferToPlace(Thief t, Police p)
+        static void TransferToPlace(Person p, string destination, string origin)
         {
-            if (t.PositionX == p.PositionX && t.PositionY == p.PositionY)
-            {
-                Place prison = places.FirstOrDefault(place => place.Name == "Prison");
-                if (prison != null)
-                {
-                    Random rnd = new Random();
-                    t.PositionX = rnd.Next(prison.SizeX);
-                    t.PositionY = rnd.Next(prison.SizeY);
-                    Console.WriteLine("Transfering {0}", p.Name);
-                }
-            }
+            Place start = places.FirstOrDefault(place => place.Name == origin);
+            Place end = places.FirstOrDefault(place => place.Name == destination);
 
+            start.People.Remove(p);
+            end.People.Add(p);
         }
 
         static void MainLoop()
@@ -48,6 +41,21 @@ namespace ConsoleApp1
                     item.Draw();
                     Thread.Sleep(1);
                 }
+                foreach (var item in places[1].People)
+                {
+                    SendToCity(item as Thief);
+                }
+                foreach (var item in places)
+                {
+                    foreach (var transport in item.Transports)
+                    {
+                        foreach (var people in transport.persons)
+                        {
+                            TransferToPlace(people, transport.target, transport.origin);
+                        }
+                    }
+                    item.Transports = new List<Transport>();
+                }
 
                 WriteOutCheck(places[0]); // calling writeoutcheck
 
@@ -56,62 +64,46 @@ namespace ConsoleApp1
 
         static void WriteOut(Person person1, Person person2)
         {
-            Queue que = new();
-           
             if(person1 is Police && person2 is Police || person1 is Police && person2 is Police)
             {
-                que.Enqueue($"The police officer {person1.Name} greets his colleague            ");
-                Console.WriteLine(que.Peek());
-                que.Dequeue();
+                Console.WriteLine($"The police officer {person1.Name} greets his colleague {person2.Name}               ");
 
             }
             else if (person1 is Police && person2 is Citizen || (person1 is Citizen && person2 is Police))
             {
                 
-                que.Enqueue($"The police officer {person1.Name} greets the citizen {person2.Name}");
-                
-                Console.WriteLine(que.Peek());
-                que.Dequeue();
-
+                Console.WriteLine($"{person1.Name} greets {person2.Name}                                               ");
             }
             else if (person1 is Thief && person2 is Citizen)
             {
                 
-                que.Enqueue($"The thief {person1.Name} steals an item from {person2.Name}! ");
-                Console.WriteLine(que.Peek());
-                que.Dequeue();
-
+                Console.WriteLine($"The thief {person1.Name} steals a valuable item from {person2.Name}!                ");
+                person1.TransferBetweenInventory(person1, person2);
             }
 
             else if(person1 is Citizen && person2 is Thief)
             {
-                que.Enqueue($"The thief {person2.Name} steals an item from {person1.Name}! ");
-                Console.WriteLine(que.Peek());
-                que.Dequeue();
-                
+                Console.WriteLine($"The thief {person2.Name} steals an item from {person1.Name}!                     ");
+                person2.TransferBetweenInventory(person1, person2);
             }
 
             if(person1 is Police && person2 is Thief)
             {
-
                 Thief thief = (Thief)person2;
+                if (thief.Inventory.Count <= 0) return;
                 SendToPrisson(thief);
+                person1.TransferBetweenInventory(person1, person2);
 
-                que.Enqueue($"The police {person1.Name} captures {person2.Name} and sends them to prisson! ");
-                Console.WriteLine(que.Peek());
-                Thread.Sleep(1000);
-                que.Dequeue();
+                Console.WriteLine($"The police {person1.Name} captures {person2.Name} and sends them to prison!     ");
             }
             if(person1 is Thief && person2 is Police)
             {
-
                 Thief thief = (Thief)person1;
+                if (thief.Inventory.Count <= 0) return;
                 SendToPrisson(thief);
+                person2.TransferBetweenInventory(person1, person2);
 
-                que.Enqueue($"The police {person2.Name} captures {person1.Name} and sends them to prisson! ");
-                Console.WriteLine(que.Peek());
-                Thread.Sleep(1000);
-                que.Dequeue();
+                Console.WriteLine($"The police {person2.Name} captures {person1.Name} and sends them to prison!     ");
             }
         }
         
@@ -122,16 +114,25 @@ namespace ConsoleApp1
             Console.WriteLine("----News----");
 
             int min = 0;
+            int row = 0;
             foreach(Person p in place.CollidedPeople) {
-                Console.SetCursorPosition(0, 23);
                 for (int i = min; i < place.CollidedPeople.Count - 1; i++)
                 {
-                    if(place.CheckCollision(place.CollidedPeople[i], p) == true) 
+                    Console.SetCursorPosition(0, 23 + row);
+                    if (place.CheckCollision(place.CollidedPeople[i], p) == true) 
                     { 
                         WriteOut(place.CollidedPeople[i], p);
+                        if (row >= 2)
+                        {
+                            row = 0;
+                        }
+                        else
+                        {
+                            row++;
+                        }
+                        Thread.Sleep(5);
                     }
                 }
-                Thread.Sleep(1);
                 min++;
             }
         }
@@ -141,11 +142,11 @@ namespace ConsoleApp1
 
             places[1].People.Add(thief);
             places[0].People.Remove(thief);
-            
+
             thief.TimeInPrison = thief.Inventory.Count * 10;
             thief.PositionX = 1;
             thief.PositionY = 14;
-
+            thief.RandomizeDirection();
         }
 
         static void SendToCity(Thief thief)
@@ -153,10 +154,12 @@ namespace ConsoleApp1
             if(thief.TimeInPrison >= 0)
             {
                 thief.TimeInPrison--;
+                return;
             }
 
-            places[1].People.Remove(thief);
-            places[0].People.Add(thief);
+            places[1].CreateOrAddToTransport(thief, places[0].Name, places[1].Name);
+            //places[1].People.Remove(thief);
+            //places[0].People.Add(thief);
         }
 
 

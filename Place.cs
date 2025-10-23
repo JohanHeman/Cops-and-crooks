@@ -17,6 +17,8 @@ namespace ConsoleApp1
 
         public List<Person> CollidedPeople { get; set; } = new List<Person>();
 
+        public List<Transport> Transports { get; set; } = new List<Transport>();
+
         public Place(string name, int sizex, int sizey)
         {
             Name = name;
@@ -28,35 +30,13 @@ namespace ConsoleApp1
 
             if (name != "Prison")
             {
-                People.Add(new Police("Bengt", 1, 1, 0, 1));
-                People.Add(new Police("Bengte", 5, 3, 1, 1));
-                People.Add(new Citizen("Bengtson", 1, 1, -1, 1));
-                People.Add(new Citizen("James", 3, 5, 1, -1));
-                People.Add(new Citizen("Brown", 4, 4, 0, -1));
-                People.Add(new Thief("Speedster", 3, 4, 1, 2));
-                People.Add(new Thief("Speedster", 1, 1, 1, 2));
-                People.Add(new Thief("Speedster", 1, 1, -1, 1));
-                People.Add(new Citizen("Maya", 1, 3, 1, 0));
-                People.Add(new Citizen("Georgia", SizeX / 2, SizeY / 3 + 1, 1, 0));
-                People.Add(new Citizen("Bob", 7, SizeY / 2 - 1, 0, 1));
-                People.Add(new Thief("Walker", 2, 2, 1, 1));
-                People.Add(new Police("Watkins", 7, 4, 1, 1));
-                People.Add(new Police("Watkins", 2, 1, 2, 2));
-                People.Add(new Police("Watkins", 1, 8, 3, 3));
-                People.Add(new Police("Watkins", 1, 8, 0, 0));
-                People.Add(new Police("Watkins", 7, 8, 0, 0));
-                People.Add(new Thief("Walker", 8, 8, -1, 0));
-                People.Add(new Thief("Walker", 4, 8, -1, 0));
-                People.Add(new Thief("Walker", 7, 5, 1, 1));
-                People.Add(new Thief("Walker", 5, 2, 0, 1));
-                People.Add(new Thief("Walker", 1, 2, 1, 1));
-                People.Add(new Thief("Walker", 8, 2, 0, 0));
-                People.Add(new Thief("Walker", 4, 8, 0, 0));
-                People.Add(new Thief("Walker", 7, 5, 0, 0));
-                People.Add(new Thief("Walker", 5, 2, 0, 0));
-                People.Add(new Thief("Walker", 1, 2, 0, 0));
-                People.Add(new Thief("Walker", 8, 2, 0, 0));
-
+                Generator gen = new Generator();
+                int i = 0;
+                while (i < sizex * 3)
+                {
+                    People.Add(gen.GeneratePerson(SizeX,SizeY));
+                    i++;
+                }
             }
             /*
             People.Add(new Police("Bengt", 2,2 ));
@@ -68,6 +48,31 @@ namespace ConsoleApp1
             */
         }
 
+        public void CreateOrAddToTransport(Person p, string destination, string origin)
+        {
+            Transport tar = new Transport(new List<Person>(), "fake","fake");
+            if (Transports.Count < 1)
+            {
+                Transports = new List<Transport>();
+                tar = new Transport(new List<Person>(), destination, origin);
+                tar.AddToTransport(p);
+                Transports.Add(tar);
+            }
+            else
+            {
+                tar = Transports.FirstOrDefault(place => place.target == destination);
+                if (tar.target == destination)
+                {
+                    tar.AddToTransport(p);
+                }
+                else
+                {
+                    tar = new Transport(new List<Person>(), destination, origin);
+                    tar.AddToTransport(p);
+                    Transports.Add(tar);
+                }
+            }
+        }
 
         public void Draw()
         {
@@ -162,6 +167,7 @@ namespace ConsoleApp1
                     x = 0;
                     y++;
                 }
+                Console.ResetColor();
             }
             
             foreach (var item in People)
