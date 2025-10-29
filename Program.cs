@@ -7,7 +7,7 @@ namespace ConsoleApp1
     {
         static List<Place> places { get; set; }
 
-        static int total_y { get; set; } = 4;
+        static int total_y { get; set; } = 2;
 
         static void Main(string[] args)
         {
@@ -31,6 +31,8 @@ namespace ConsoleApp1
 
             start.People.Remove(p);
             end.People.Add(p);
+            p.DirectionX = 1;
+            p.Move(end.SizeX,end.SizeY);
         }
 
         static ConsoleKeyInfo key {  get; set; }
@@ -57,7 +59,6 @@ namespace ConsoleApp1
         {
             foreach (var item in places)
             {
-                Console.WriteLine("Place: {0} vilken är {1}x{2}", item.Name, item.SizeX, item.SizeY);
                 item.Draw();
             }
             for (int i = 0; i < 100; i++)
@@ -68,6 +69,7 @@ namespace ConsoleApp1
                     item.Draw();
                     Thread.Sleep(1);
                 }
+                WriteOutCheck(places[0]); // calling writeoutcheck
                 foreach (var item in places[1].People)
                 {
                     SendToCity(item as Thief);
@@ -84,7 +86,6 @@ namespace ConsoleApp1
                     item.Transports = new List<Transport>();
                 }
 
-                WriteOutCheck(places[0]); // calling writeoutcheck
                 if (Console.KeyAvailable)
                 {
                     key = Console.ReadKey(true);
@@ -112,6 +113,7 @@ namespace ConsoleApp1
                 {
                     item.PerformActions();
                 }
+                WriteOutList(places[0]); // calling writeoutcheck
                 foreach (var item in places[1].People)
                 {
                     SendToCity(item as Thief);
@@ -128,7 +130,6 @@ namespace ConsoleApp1
                     item.Transports = new List<Transport>();
                 }
 
-                WriteOutList(places[0]); // calling writeoutcheck
                 Thread.Sleep(1000);
                 if (Console.KeyAvailable)
                 {
@@ -164,34 +165,28 @@ namespace ConsoleApp1
             {
 
                 person1.TransferBetweenInventory(person1, person2);
+                person1.RandomizeDirection();
                 return $"The thief {person1.Name} steals a valuable item from {person2.Name}!                ";
             }
 
             else if(person1 is Citizen && person2 is Thief)
             {
                 person2.TransferBetweenInventory(person1, person2);
+                person2.RandomizeDirection();
                 return $"The thief {person2.Name} steals an item from {person1.Name}!                     ";
             }
-
-            if(person1 is Police && person2 is Thief)
+            if (person1 is Thief && person2 is Police)
             {
-                Thief thief = (Thief)person2;
-                if (thief.Inventory.Count <= 0) return "";
-                SendToPrisson(thief);
-                person1.TransferBetweenInventory(person1, person2);
-
+                 SendToPrisson(person1);
+                 person2.TransferBetweenInventory(person1, person2);
+                 return $"The police {person2.Name} captures {person1.Name} and sends them to prison!     ";
+            }
+            else if(person1 is Police && person2 is Thief)
+            {
+                SendToPrisson(person2);
+                person1.TransferBetweenInventory(person2, person1);
                 return $"The police {person1.Name} captures {person2.Name} and sends them to prison!     ";
             }
-            if(person1 is Thief && person2 is Police)
-            {
-                Thief thief = (Thief)person1;
-                if (thief.Inventory.Count <= 0) return "";
-                SendToPrisson(thief);
-                person2.TransferBetweenInventory(person1, person2);
-
-                return $"The police {person2.Name} captures {person1.Name} and sends them to prison!     ";
-            }
-
             return "";
         }
         
@@ -230,14 +225,6 @@ namespace ConsoleApp1
                         if (WriteOut(place.CollidedPeople[i], p).Length > 1)
                         {
                             news.Add(WriteOut(place.CollidedPeople[i], p));
-                            if (row >= max)
-                            {
-                                break;
-                            }
-                            else
-                            {
-                                row++;
-                            }
                         }
                     }
                 }
@@ -247,45 +234,65 @@ namespace ConsoleApp1
             if (news.Count < max && old_news.Count > 0)
             {
                 List<string> temp = new List<string>();
+                List<string> old_news_rem = new List<string>();
                 foreach (string s in news)
                 {
-                    if (s.Length > 1)
+                    if (s.Length > 1 && temp.Count < max)
                     {
                         temp.Add(s);
                     }
                 }
                 foreach (string s in old_news)
                 {
-                    if (temp.Count < max && !temp.Contains(s) && s.Length > 1)
+                    if (temp.Count < max && s.Length > 1)
                     {
                         temp.Add(s);
+                        old_news_rem.Add(s);
                     }
                 }
                 news = temp;
+                foreach (var s in old_news_rem)
+                {
+                    old_news.Remove(s);
+                }
             }
 
             row = 0;
             foreach (var txt in news)
             {
-                Console.SetCursorPosition(0, pos + row);
-                ClearCurrentConsoleLine();
-                Console.WriteLine(txt);
-                Thread.Sleep(1);
-                row++;
+                if (txt.Length > 1)
+                {
+                    Console.SetCursorPosition(0, pos + row);
+                    ClearCurrentConsoleLine();
+                    Console.WriteLine(txt);
+                    row++;
+                    Thread.Sleep(10);
+                    if (!old_news.Contains(txt))
+                    {
+                        old_news.Add(txt);
+                    }
+                }
+                if (row >= max)
+                {
+                    break;
+                }
             }
-            old_news = news;
         }
 
-        static void SendToPrisson(Thief thief)
+        static void SendToPrisson(Person thief)
         {
+            Thief t = (Thief)thief;
 
-            places[1].People.Add(thief);
-            places[0].People.Remove(thief);
-
-            thief.TimeInPrison = thief.Inventory.Count * 10;
-            thief.PositionX = 1;
-            thief.PositionY = 14;
-            thief.RandomizeDirection();
+            if (thief.Inventory.Count <= 0)
+            {
+                t.TimeInPrison = 10;
+            }
+            else
+            {
+                t.TimeInPrison = thief.Inventory.Count * 10;
+            }
+            thief = t;
+            places[1].CreateOrAddToTransport(thief, places[1].Name, places[1].Name);
         }
 
         static void SendToCity(Thief thief)
