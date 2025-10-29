@@ -169,13 +169,18 @@ namespace ConsoleApp1
                 }
                 Console.ResetColor();
             }
-            
+
+            PerformActions();
+        }
+
+        public void PerformActions()
+        {
             foreach (var item in People)
             {
                 item.Move(SizeX, SizeY);
             }
-
         }
+
         public bool CheckCollision(Person a, Person b)
         {
             if (a.PositionX == b.PositionX && a.PositionY == b.PositionY)
