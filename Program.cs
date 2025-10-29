@@ -7,11 +7,18 @@ namespace ConsoleApp1
     {
         static List<Place> places { get; set; }
 
+        static int total_y { get; set; } = 4;
+
         static void Main(string[] args)
         {
             places = new List<Place>();
-            places.Add(new Place("City", 18,10));
+            places.Add(new Place("City", 22,10));
             places.Add(new Place("Prison", 8,8));
+
+            foreach (var place in places)
+            {
+                total_y += place.SizeY;
+            }
 
             MainLoop();
 
@@ -98,7 +105,7 @@ namespace ConsoleApp1
         static void SecondaryLoop()
         {
             Console.Clear();
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 200; i++)
             {
                 Console.SetCursorPosition(0, 0);
                 foreach (var item in places)
@@ -130,7 +137,7 @@ namespace ConsoleApp1
                     {
                         case ConsoleKey.S:
                             second = false;
-                            i = 100;
+                            i += 500;
                             Console.Clear();
                             break;
                         default:
@@ -155,15 +162,15 @@ namespace ConsoleApp1
             }
             else if (person1 is Thief && person2 is Citizen)
             {
-                
-                return $"The thief {person1.Name} steals a valuable item from {person2.Name}!                ";
+
                 person1.TransferBetweenInventory(person1, person2);
+                return $"The thief {person1.Name} steals a valuable item from {person2.Name}!                ";
             }
 
             else if(person1 is Citizen && person2 is Thief)
             {
-                return $"The thief {person2.Name} steals an item from {person1.Name}!                     ";
                 person2.TransferBetweenInventory(person1, person2);
+                return $"The thief {person2.Name} steals an item from {person1.Name}!                     ";
             }
 
             if(person1 is Police && person2 is Thief)
@@ -191,40 +198,26 @@ namespace ConsoleApp1
 
         static void WriteOutCheck(Place place) // compares all the people in place
         {
-            Console.SetCursorPosition(0,22);
+            Console.SetCursorPosition(0, total_y);
             Console.WriteLine("----News----");
 
-            int min = 0;
-            int row = 0;
-            foreach(Person p in place.CollidedPeople) {
-                for (int i = min; i < place.CollidedPeople.Count - 1; i++)
-                {
-                    Console.SetCursorPosition(0, 23 + row);
-                    if (place.CheckCollision(place.CollidedPeople[i], p) == true)
-                    {
-                        if (WriteOut(place.CollidedPeople[i], p) != "")
-                        {
-                            Console.WriteLine(WriteOut(place.CollidedPeople[i], p));
-                            if (row >= 2)
-                            {
-                                row = 0;
-                            }
-                            else
-                            {
-                                row++;
-                            }
-                        }
-                        Thread.Sleep(5);
-                    }
-                }
-                min++;
-            }
+            WriteNews(total_y + 1, 4, place);
         }
+
+        static List<String> old_news {  get; set; } = new List<String>();
+
         static void WriteOutList(Place place) // compares all the people in place
         {
             Console.SetCursorPosition(0, 0);
             Console.WriteLine("----News----");
 
+            WriteNews(1, 10, place);
+
+            Thread.Sleep(50);
+        }
+
+        static void WriteNews(int pos, int max, Place place)
+        {
             int min = 0;
             int row = 0;
             List<string> news = new List<string>();
@@ -234,9 +227,10 @@ namespace ConsoleApp1
                 {
                     if (place.CheckCollision(place.CollidedPeople[i], p) == true)
                     {
-                        if (WriteOut(place.CollidedPeople[i], p).Length > 1) {
+                        if (WriteOut(place.CollidedPeople[i], p).Length > 1)
+                        {
                             news.Add(WriteOut(place.CollidedPeople[i], p));
-                            if (row >= 10)
+                            if (row >= max)
                             {
                                 break;
                             }
@@ -249,20 +243,37 @@ namespace ConsoleApp1
                 }
                 min++;
             }
-            for (int i = 10; i > 0; i--)
+
+            if (news.Count < max && old_news.Count > 0)
             {
-                Console.SetCursorPosition(0, 1);
-                Console.WriteLine("");
+                List<string> temp = new List<string>();
+                foreach (string s in news)
+                {
+                    if (s.Length > 1)
+                    {
+                        temp.Add(s);
+                    }
+                }
+                foreach (string s in old_news)
+                {
+                    if (temp.Count < max && !temp.Contains(s) && s.Length > 1)
+                    {
+                        temp.Add(s);
+                    }
+                }
+                news = temp;
             }
+
             row = 0;
             foreach (var txt in news)
             {
-                Console.SetCursorPosition(0, 1 + row);
+                Console.SetCursorPosition(0, pos + row);
+                ClearCurrentConsoleLine();
                 Console.WriteLine(txt);
-                Thread.Sleep(10);
+                Thread.Sleep(1);
                 row++;
             }
-            Thread.Sleep(100);
+            old_news = news;
         }
 
         static void SendToPrisson(Thief thief)
@@ -290,6 +301,13 @@ namespace ConsoleApp1
             //places[0].People.Add(thief);
         }
 
+        public static void ClearCurrentConsoleLine()
+        {
+            int currentLineCursor = Console.CursorTop;
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, currentLineCursor);
+        }
 
     }
 }
