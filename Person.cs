@@ -67,6 +67,7 @@ namespace ConsoleApp1
                         break;
                 }
                 inventory.Add(item);
+                type = rnd.Next(5);
                 i--;
             }
             return inventory;
