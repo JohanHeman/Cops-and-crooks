@@ -205,14 +205,46 @@ namespace ConsoleApp1
             if (person1 is Thief && person2 is Police)
             {
                  SendToPrisson(person1);
-                 person2.TransferBetweenInventory(person1, person2);
-                 return $"The police {person2.Name} captures {person1.Name} and sends them to prison!     ";
+                if (person1.CheckInventoryForTheft())
+                {
+                    Thief t = (Thief)person1;
+
+                    if (person1.Inventory.Count <= 0)
+                    {
+                        t.TimeInPrison = 0;
+                    }
+                    else if (person1.Inventory.Count >= 1)
+                    {
+                        t.TimeInPrison = person1.Inventory.Count * 10;
+                    }
+                    person1 = t;
+
+                    person2.TransferBetweenInventory(person1, person2);
+                    return $"The police {person2.Name} captures {person1.Name} and sends them to prison!     ";
+
+                }
             }
             else if(person1 is Police && person2 is Thief)
             {
                 SendToPrisson(person2);
-                person1.TransferBetweenInventory(person2, person1);
-                return $"The police {person1.Name} captures {person2.Name} and sends them to prison!     ";
+                if (person2.CheckInventoryForTheft())
+                {
+
+                    Thief t = (Thief)person2;
+
+                    if (person2.Inventory.Count <= 0)
+                    {
+                        t.TimeInPrison = 0;
+                    }
+                    else if (person2.Inventory.Count >= 1)
+                    {
+                        t.TimeInPrison = person2.Inventory.Count * 10;
+                    }
+                    person2 = t;
+
+                    person1.TransferBetweenInventory(person2, person1);
+                    return $"The police {person1.Name} captures {person2.Name} and sends them to prison!     ";
+                }
             }
             return "";
         }
@@ -309,17 +341,7 @@ namespace ConsoleApp1
 
         static void SendToPrisson(Person thief)
         {
-            Thief t = (Thief)thief;
 
-            if (thief.Inventory.Count <= 0)
-            {
-                t.TimeInPrison = 0;
-            }
-            else if (thief.Inventory.Count >= 1)
-            {
-                t.TimeInPrison = thief.Inventory.Count * 10;
-            }
-            thief = t;
             places[1].CreateOrAddToTransport(thief, places[1].Name, places[1].Name);
         }
 
