@@ -73,6 +73,11 @@ namespace ConsoleApp1
             return inventory;
         }
 
+        public void CheckInventoryForTheft()
+        {
+            
+        }
+
         
         public virtual void TransferBetweenInventory(Person person1, Person person2)
         {

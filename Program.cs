@@ -313,15 +313,14 @@ namespace ConsoleApp1
 
             if (thief.Inventory.Count <= 0)
             {
-                t.TimeInPrison = 10;
+                t.TimeInPrison = 0;
             }
-            else
+            else if (thief.Inventory.Count >= 1)
             {
                 t.TimeInPrison = thief.Inventory.Count * 10;
             }
             thief = t;
             places[1].CreateOrAddToTransport(thief, places[1].Name, places[1].Name);
-            
         }
 
         static void SendToCity(Thief thief)
