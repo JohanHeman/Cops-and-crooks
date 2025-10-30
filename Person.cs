@@ -52,18 +52,23 @@ namespace ConsoleApp1
                 {
                     case 1:
                         item.Name = "Klocka";
+                        item.OriginPerson = this;
                         break;
                     case 2:
                         item.Name = "Sten";
+                        item.OriginPerson = this;
                         break;
                     case 3:
                         item.Name = "Plånbok";
+                        item.OriginPerson = this;
                         break;
                     case 4:
                         item.Name = "Burk";
+                        item.OriginPerson = this;
                         break;
                     default:
                         item.Name = "Pinne";
+                        item.OriginPerson = this;
                         break;
                 }
                 inventory.Add(item);
@@ -73,9 +78,16 @@ namespace ConsoleApp1
             return inventory;
         }
 
-        public void CheckInventoryForTheft()
+        public bool CheckInventoryForTheft()
         {
-            
+            foreach (var item in Inventory)
+            {
+                if (item.OriginPerson != this)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         
