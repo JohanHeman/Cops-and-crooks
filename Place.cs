@@ -19,6 +19,9 @@ namespace ConsoleApp1
 
         public List<Transport> Transports { get; set; } = new List<Transport>();
 
+
+
+
         public Place(string name, int sizex, int sizey)
         {
             Name = name;
@@ -47,6 +50,12 @@ namespace ConsoleApp1
             People.Add(new Thief("Tjuve", size / 2 + 1, size / 2));
             */
         }
+
+
+ 
+
+
+
 
         public void CreateOrAddToTransport(Person p, string destination, string origin)
         {

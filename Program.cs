@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Globalization;
+using System.Reflection.Metadata.Ecma335;
 
 namespace ConsoleApp1
 {
@@ -9,8 +10,14 @@ namespace ConsoleApp1
 
         static int total_y { get; set; } = 2;
 
+
+        static List<Person> robedCitizens = new List<Person>();
+
         static void Main(string[] args)
         {
+
+
+
             places = new List<Place>();
             places.Add(new Place("City", 22,10));
             places.Add(new Place("Prison", 8,8));
@@ -23,6 +30,12 @@ namespace ConsoleApp1
             MainLoop();
 
         }
+
+        
+
+
+
+
 
         static void TransferToPlace(Person p, string destination, string origin)
         {
@@ -100,6 +113,8 @@ namespace ConsoleApp1
                             break;
                     }
                 }
+
+                
             }
         }
 
@@ -165,6 +180,12 @@ namespace ConsoleApp1
             {
 
                 person1.TransferBetweenInventory(person1, person2);
+
+                if (!robedCitizens.Contains(person2))
+                {
+                    robedCitizens.Add(person2);
+                }
+
                 person1.RandomizeDirection();
                 return $"The thief {person1.Name} steals a valuable item from {person2.Name}!                ";
             }
@@ -172,8 +193,14 @@ namespace ConsoleApp1
             else if(person1 is Citizen && person2 is Thief)
             {
                 person2.TransferBetweenInventory(person1, person2);
+
+                if (!robedCitizens.Contains(person1))
+                {
+                    robedCitizens.Add(person1);
+                }
                 person2.RandomizeDirection();
                 return $"The thief {person2.Name} steals an item from {person1.Name}!                     ";
+                
             }
             if (person1 is Thief && person2 is Police)
             {
@@ -197,6 +224,7 @@ namespace ConsoleApp1
             Console.WriteLine("----News----");
 
             WriteNews(total_y + 1, 4, place);
+            WriteStatus();
         }
 
         static List<String> old_news {  get; set; } = new List<String>();
@@ -293,6 +321,7 @@ namespace ConsoleApp1
             }
             thief = t;
             places[1].CreateOrAddToTransport(thief, places[1].Name, places[1].Name);
+            
         }
 
         static void SendToCity(Thief thief)
@@ -316,5 +345,24 @@ namespace ConsoleApp1
             Console.SetCursorPosition(0, currentLineCursor);
         }
 
+
+        public static void WriteStatus()
+        {
+            Console.SetCursorPosition(0, total_y + 5);
+            Console.WriteLine("---Status---");
+            Console.WriteLine("Number of arrested thieves: " + places[1].People.Count);
+            Console.WriteLine("Amount of robbed citizens: " + robedCitizens.Count);
+
+            
+
+        }
+     
+
+            
+
+
+
+        }
+
+
     }
-}

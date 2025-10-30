@@ -103,6 +103,7 @@ namespace ConsoleApp1
 
                 person1.Inventory.Add(person2.Inventory[num]); // takes random item from citezen
                 person2.Inventory.Remove(person2.Inventory[num]); // takes random item from citezen
+                
             }
             else if (person1 is Citizen && person2 is Thief)
             {
