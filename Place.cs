@@ -61,7 +61,13 @@ namespace ConsoleApp1
             else
             {
                 tar = Transports.FirstOrDefault(place => place.target == destination);
-                if (tar.target == destination)
+                if (tar == null)
+                {
+                    tar = new Transport(new List<Person>(), destination, origin);
+                    tar.AddToTransport(p);
+                    Transports.Add(tar);
+                }
+                else if (tar.target == destination)
                 {
                     tar.AddToTransport(p);
                 }
