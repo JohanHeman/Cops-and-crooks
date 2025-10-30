@@ -40,6 +40,7 @@ namespace ConsoleApp1
                     People.Add(gen.GeneratePerson(SizeX,SizeY));
                     i++;
                 }
+                People.Sort(CheckOrder);
             }
             /*
             People.Add(new Police("Bengt", 2,2 ));
@@ -51,11 +52,38 @@ namespace ConsoleApp1
             */
         }
 
+        protected int CheckOrder(Person a, Person b)
+        {
+            int a_value = 0;
+            int b_value = 0;
 
- 
+            if (a is Thief)
+            {
+                a_value = 2;
+            }
+            else if (a is Police)
+            {
+                a_value = 1;
+            }
+            if (b is Thief)
+            {
+                b_value = 2;
+            }
+            else if (b is Police)
+            {
+                b_value = 1;
+            }
 
-
-
+            if (a_value > b_value)
+            {
+                return -1;
+            }
+            else if (a_value < b_value)
+            {
+                return 1;
+            }
+            return 0;
+        }
 
         public void CreateOrAddToTransport(Person p, string destination, string origin)
         {

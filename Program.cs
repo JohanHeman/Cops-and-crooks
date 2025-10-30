@@ -263,12 +263,34 @@ namespace ConsoleApp1
 
         static void WriteOutList(Place place) // compares all the people in place
         {
+            Console.Clear();
+            foreach (var people in place.People)
+            {
+                Console.WriteLine(people.Name);
+                if (people is Thief)
+                {
+                    Console.Write(" is thief");
+                }
+                else if (people is Police)
+                {
+                    Console.Write(" is police");
+                }
+                else
+                {
+                    Console.Write(" is neither");
+                }
+                Console.WriteLine("");
+            }
+
+            /*
             Console.SetCursorPosition(0, 0);
+
             Console.WriteLine("----News----");
 
             WriteNews(1, 10, place);
+            */
 
-            Thread.Sleep(50);
+            Thread.Sleep(500);
         }
 
         static void WriteNews(int pos, int max, Place place)
