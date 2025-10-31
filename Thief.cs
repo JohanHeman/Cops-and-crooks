@@ -23,7 +23,21 @@ namespace ConsoleApp1
 
         public override void TransferBetweenInventory(Person person1, Person person2)
         {
+            TimeBetweenTheft -= 5;
             base.TransferBetweenInventory(person1, person2);
+        }
+
+        public int TimeBetweenTheft { get; set; } = 0;
+
+        public override void Move(int sizex, int sizey)
+        {
+            TimeBetweenTheft++;
+            if (TimeBetweenTheft > 25)
+            {
+                RandomizeDirection();
+                TimeBetweenTheft = 0;
+            }
+            base.Move(sizex, sizey);
         }
     }
 }

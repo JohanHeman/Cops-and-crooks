@@ -35,7 +35,7 @@ namespace ConsoleApp1
             {
                 Generator gen = new Generator();
                 int i = 0;
-                while (i < sizex * 3 && i < 35)
+                while (i < (sizex * sizey / 2) && i < 35)
                 {
                     People.Add(gen.GeneratePerson(SizeX,SizeY));
                     i++;
@@ -50,6 +50,23 @@ namespace ConsoleApp1
             People.Add(new Person("Bosse", size / 2 - 1, size / 2 + 1));
             People.Add(new Thief("Tjuve", size / 2 + 1, size / 2));
             */
+        }
+
+        public int GetThieves()
+        {
+            int i = 0;
+            foreach (var person in People)
+            {
+                if (person is Thief)
+                {
+                    i++;
+                }
+                else
+                {
+                    return i;
+                }
+            }
+            return i;
         }
 
         public int CheckOrder(Person a, Person b)
@@ -149,20 +166,20 @@ namespace ConsoleApp1
                             if (person is Police)
                             {
                                 Console.ForegroundColor = ConsoleColor.Blue;
-                                Console.Write(" P ");
+                                Console.Write("[P]");
                             }
                             else if (person is Thief)
                             {
                                 Console.ForegroundColor = ConsoleColor.Red;
-                                Console.Write(" T ");
+                                Console.Write("[T]");
                             }
                             else
                             {
                                 Console.ForegroundColor = ConsoleColor.Yellow;
-                                Console.Write(" C ");
+                                Console.Write("[C]");
                             }
                             Console.ResetColor();
-                            Thread.Sleep(1);
+                            //Thread.Sleep(1);
                             foreach (var item in GetAtLocation(x,y))
                             {
                                 if (!CollidedPeople.Contains(item))
@@ -179,34 +196,41 @@ namespace ConsoleApp1
                                 if (person is Police)
                                 {
                                     Console.ForegroundColor = ConsoleColor.Blue;
-                                    Console.Write(" P ");
+                                    Console.Write("[P]");
                                 }
                                 else if (person is Thief)
                                 {
                                     Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.Write(" T ");
+                                    Console.Write("[T]");
                                 }
                                 else
                                 {
                                     Console.ForegroundColor = ConsoleColor.Yellow;
-                                    Console.Write(" C ");
+                                    Console.Write("[C]");
                                 }
                                 Console.ResetColor();
-                                Thread.Sleep(1);
+                                //Thread.Sleep(1);
                             /*
                             }
                             */
                         }
                         else
                         {
-                            Console.Write("   ");
+                            Console.Write("[ ]");
                         }
                     }
                     x++;
                 }
                 else
                 {
-                    Console.WriteLine("");
+                    if (y < Name.Length)
+                    {
+                        Console.WriteLine("{0}", Name[y]);
+                    }
+                    else
+                    {
+                        Console.WriteLine("");
+                    }
                     x = 0;
                     y++;
                 }

@@ -23,7 +23,11 @@ namespace ConsoleApp1
 
         public override void TransferBetweenInventory(Person person1, Person person2)
         {
-            base.TransferBetweenInventory(person1, person2);
+            foreach (Item i in person1.Inventory)
+            {
+                person2.Inventory.Add(i); // takes all items to police from thief
+            }
+            person1.Inventory.Clear();
         }
 
         // greet function in Person.cs

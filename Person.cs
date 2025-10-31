@@ -18,7 +18,6 @@ namespace ConsoleApp1
         public int DirectionX { get; set; }
         public int DirectionY { get; set; }
 
-
         public Person(string name, int positionX, int positionY)
         {
             Name = name;
@@ -32,8 +31,8 @@ namespace ConsoleApp1
         public void RandomizeDirection()
         {
             Random rnd = new Random();
-            DirectionX = rnd.Next(-1,1);
-            DirectionY = rnd.Next(-1, 1);
+            DirectionX = rnd.Next(-1,2);
+            DirectionY = rnd.Next(-1, 2);
             if (DirectionX == 0 && DirectionY == 0)
             {
                 RandomizeDirection();
@@ -46,7 +45,7 @@ namespace ConsoleApp1
             
             Random rnd = new Random();
 
-            int i = rnd.Next(1,4);
+            int i = rnd.Next(1,3);
             int type = rnd.Next(5);
 
             Item item = new Item();
@@ -119,47 +118,21 @@ namespace ConsoleApp1
             return false;
         }
 
-        
+        public bool CanStealFromInventory()
+        {
+            return Inventory.Count < 4;
+        }
+
+        // Transfer from Person 1 to Person 2
         public virtual void TransferBetweenInventory(Person person1, Person person2)
         {
-            if(person1 is Police && person2 is Thief)
-            {
-                if (person2.Inventory.Count <= 0) return;
+            if (person2.Inventory.Count > 4) return;
+            if (person1.Inventory.Count <= 0) return;
 
-                foreach (Item i in person2.Inventory)
-                {
-                    person1.Inventory.Add(i); // takes all items to police from thief
-                }
-                person2.Inventory.Clear();
-            }
-            else if (person1 is Thief && person2 is Police)
-            {
-                if (person1.Inventory.Count <= 0) return;
+            int num = Random.Shared.Next(0, person1.Inventory.Count - 1);
 
-                foreach (Item i in person1.Inventory)
-                {
-                    person2.Inventory.Add(i); // takes all items to police from thief
-                }
-                person1.Inventory.Clear();
-            }
-            else if(person1 is Thief && person2 is Citizen)
-            {
-                if (person2.Inventory.Count <= 0) return;
-                int num = Random.Shared.Next(0, person2.Inventory.Count - 1);
-
-                person1.Inventory.Add(person2.Inventory[num]); // takes random item from citezen
-                person2.Inventory.Remove(person2.Inventory[num]); // takes random item from citezen
-                
-            }
-            else if (person1 is Citizen && person2 is Thief)
-            {
-                if (person1.Inventory.Count <= 0) return;
-                int num = Random.Shared.Next(0, person1.Inventory.Count - 1);
-
-                person2.Inventory.Add(person1.Inventory[num]); // takes random item from citezen
-                person1.Inventory.Remove(person1.Inventory[num]); // takes random item from citezen
-            }
-
+            person2.Inventory.Add(person1.Inventory[num]); // takes random item from citezen
+            person1.Inventory.Remove(person1.Inventory[num]); // takes random item from citezen
         }
 
             
@@ -167,22 +140,22 @@ namespace ConsoleApp1
         public virtual void Move(int sizex, int sizey)
         {
             PositionX += DirectionX;
-            PositionY += DirectionY;
+            PositionY -= DirectionY;
             if (PositionX >= sizex)
             {
-                PositionX = 1;
+                PositionX = 0;
             }
-            else if (PositionX <= 0)
+            else if (PositionX < 0)
             {
-                PositionX = sizex - 1;
+                PositionX = sizex - 2;
             }
             if (PositionY >= sizey)
             {
-                PositionY = 1;
+                PositionY = 0;
             }
-            else if (PositionY <= 0)
+            else if (PositionY < 0)
             {
-                PositionY = sizey - 1;
+                PositionY = sizey - 2;
             }
         }
     }
