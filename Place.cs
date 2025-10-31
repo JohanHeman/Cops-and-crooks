@@ -35,7 +35,7 @@ namespace ConsoleApp1
             {
                 Generator gen = new Generator();
                 int i = 0;
-                while (i < sizex * 3)
+                while (i < sizex * 3 && i < 35)
                 {
                     People.Add(gen.GeneratePerson(SizeX,SizeY));
                     i++;
@@ -52,7 +52,7 @@ namespace ConsoleApp1
             */
         }
 
-        protected int CheckOrder(Person a, Person b)
+        public int CheckOrder(Person a, Person b)
         {
             int a_value = 0;
             int b_value = 0;

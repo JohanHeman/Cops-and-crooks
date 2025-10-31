@@ -19,7 +19,7 @@ namespace ConsoleApp1
 
 
             places = new List<Place>();
-            places.Add(new Place("City", 22,10));
+            places.Add(new Place("City", 22,11));
             places.Add(new Place("Prison", 8,8));
 
             foreach (var place in places)
@@ -145,7 +145,7 @@ namespace ConsoleApp1
                     item.Transports = new List<Transport>();
                 }
 
-                Thread.Sleep(1000);
+                Thread.Sleep(75);
                 if (Console.KeyAvailable)
                 {
                     key = Console.ReadKey(true);
@@ -234,11 +234,11 @@ namespace ConsoleApp1
 
                     if (person2.Inventory.Count <= 0)
                     {
-                        t.TimeInPrison = 0;
+                        t.TimeInPrison = 15;
                     }
                     else if (person2.Inventory.Count >= 1)
                     {
-                        t.TimeInPrison = person2.Inventory.Count * 10;
+                        t.TimeInPrison = person2.Inventory.Count * 15;
                     }
                     person2 = t;
 
@@ -256,31 +256,58 @@ namespace ConsoleApp1
             Console.WriteLine("----News----");
 
             WriteNews(total_y + 1, 4, place);
-            WriteStatus();
+            WriteStatus(total_y + 5);
         }
 
         static List<String> old_news {  get; set; } = new List<String>();
 
         static void WriteOutList(Place place) // compares all the people in place
         {
-            Console.Clear();
-            foreach (var people in place.People)
+            Console.SetCursorPosition(0, 0);
+            List<Person> temp = new List<Person>();
+
+            int height = Console.WindowHeight - 1;
+
+            foreach (Person person in place.People)
             {
-                Console.WriteLine(people.Name);
-                if (people is Thief)
+                if (!temp.Contains(person) && temp.Count < height)
                 {
-                    Console.Write(" is thief");
+                    temp.Add(person);
                 }
-                else if (people is Police)
+            }
+            
+
+            for (int i = 0;  i < temp.Count; i++)
+            {
+                var person = temp[i];
+                ClearCurrentConsoleLine();
+                if (person is Thief)
                 {
-                    Console.Write(" is police");
+                    Console.Write("Thief: ");
+                }
+                else if (person is Police)
+                {
+                    Console.Write("Police: ");
                 }
                 else
                 {
-                    Console.Write(" is neither");
+                    Console.Write("Civilian: ");
                 }
+                Console.Write(person.Name);
+                if (person.Inventory.Count > 0)
+                {
+                    Console.Write(": {0} ", person.GetInventory());
+                }
+                else
+                {
+                    Console.Write("");
+                }
+                Console.Write(": ({0},{1})", person.PositionX, person.PositionY);
                 Console.WriteLine("");
+                Thread.Sleep(1);
             }
+
+            WriteStatus(temp.Count);
 
             /*
             Console.SetCursorPosition(0, 0);
@@ -289,8 +316,6 @@ namespace ConsoleApp1
 
             WriteNews(1, 10, place);
             */
-
-            Thread.Sleep(500);
         }
 
         static void WriteNews(int pos, int max, Place place)
@@ -389,9 +414,9 @@ namespace ConsoleApp1
         }
 
 
-        public static void WriteStatus()
+        public static void WriteStatus(int position)
         {
-            Console.SetCursorPosition(0, total_y + 5);
+            Console.SetCursorPosition(0, position);
             Console.WriteLine("---Status---");
             Console.WriteLine("Number of arrested thieves: " + places[1].People.Count);
             Console.WriteLine("Amount of robbed citizens: " + robedCitizens.Count);

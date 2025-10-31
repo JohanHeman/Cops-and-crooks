@@ -34,6 +34,10 @@ namespace ConsoleApp1
             Random rnd = new Random();
             DirectionX = rnd.Next(-1,1);
             DirectionY = rnd.Next(-1, 1);
+            if (DirectionX == 0 && DirectionY == 0)
+            {
+                RandomizeDirection();
+            }
         }
 
         protected List<Item> SetUpInventory()
@@ -42,12 +46,14 @@ namespace ConsoleApp1
             
             Random rnd = new Random();
 
-            int i = rnd.Next(4);
+            int i = rnd.Next(1,4);
             int type = rnd.Next(5);
 
             Item item = new Item();
             while (i > 0)
             {
+                type = rnd.Next(6);
+                item = new Item();
                 switch (type)
                 {
                     case 1:
@@ -66,16 +72,39 @@ namespace ConsoleApp1
                         item.Name = "Burk";
                         item.OriginPerson = this;
                         break;
+                    case 5:
+                        item.Name = "Katt";
+                        item.OriginPerson = this;
+                        break;
                     default:
                         item.Name = "Pinne";
                         item.OriginPerson = this;
                         break;
                 }
                 inventory.Add(item);
-                type = rnd.Next(5);
                 i--;
             }
             return inventory;
+        }
+
+        public string GetInventory()
+        {
+            string item_string = "";
+            int i = 0;
+            foreach (var item in Inventory)
+            {
+                item_string += item.Name;
+                if (item.OriginPerson != this)
+                {
+                    item_string += " (s)";
+                }
+                if (Inventory.Count > 1 && i < Inventory.Count - 1)
+                {
+                    item_string += ", ";
+                }
+                i++;
+            }
+            return item_string;
         }
 
         public bool CheckInventoryForTheft()
