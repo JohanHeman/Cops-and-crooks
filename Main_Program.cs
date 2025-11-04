@@ -406,8 +406,7 @@ namespace ConsoleApp1
 
         public void SendToPrisson(Person thief)
         {
-
-            places[1].CreateOrAddToTransport(thief, places[1].Name, places[1].Name);
+            places[1].CreateOrAddToTransport(thief, places[1].Name, places[0].Name);
         }
 
         public void SendToCity(Thief thief)
